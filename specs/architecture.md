@@ -33,14 +33,13 @@ A aplicação segue o padrão **Model-View-Controller (MVC)**:
 │   │       CONTROLLER (taskController.js)     │   │
 │   │  createTask()  getAllTasks()              │   │
 │   │  updateTask()  deleteTask()              │   │
-│   │  getReminders()                          │   │
 │   └──────────────────┬───────────────────────┘   │
 │                      │                           │
 │   ┌──────────────────▼───────────────────────┐   │
 │   │          MODEL (taskModel.js)            │   │
 │   │  In-Memory Array: tasks[]                │   │
 │   │  create() findAll() findById()           │   │
-│   │  update() delete() findReminders()       │   │
+│   │  update() delete()                       │   │
 │   └──────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────┘
 ```
@@ -67,16 +66,6 @@ Browser → fetch(DELETE /api/tasks/:id)
        → Model.delete(id) → tasks.splice(index, 1) 
        → return true → res.status(200).json({ message })
        → Browser remove o card da UI
-```
-
-### Verificar Lembretes (GET /api/tasks/reminders)
-
-```
-Browser polling (30s) → fetch(GET /api/tasks/reminders) 
-       → Router → Controller.getReminders(req, res) 
-       → Model.findReminders() → filter tasks with due reminders
-       → return reminderTasks → res.json(tasks)
-       → Browser destaca visualmente as tarefas com lembrete vencido
 ```
 
 ---
@@ -112,7 +101,6 @@ src/
   "title": "string (obrigatório, max 100 chars)",
   "description": "string (opcional, max 500 chars)",
   "completed": "boolean (default: false)",
-  "reminderDate": "string ISO-8601 | null",
   "createdAt": "string ISO-8601",
   "updatedAt": "string ISO-8601"
 }
@@ -123,10 +111,9 @@ src/
 | Método | Endpoint | Corpo | Resposta | Status |
 |:---|:---|:---|:---|:---|
 | GET | `/api/tasks` | — | `Task[]` | 200 |
-| POST | `/api/tasks` | `{ title, description?, reminderDate? }` | `Task` | 201 |
-| PUT | `/api/tasks/:id` | `{ title?, description?, completed?, reminderDate? }` | `Task` | 200 |
+| POST | `/api/tasks` | `{ title, description? }` | `Task` | 201 |
+| PUT | `/api/tasks/:id` | `{ title?, description?, completed? }` | `Task` | 200 |
 | DELETE | `/api/tasks/:id` | — | `{ message }` | 200 |
-| GET | `/api/tasks/reminders` | — | `Task[]` | 200 |
 
 ### Respostas de Erro
 

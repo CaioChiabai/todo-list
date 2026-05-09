@@ -27,8 +27,8 @@ const taskController = {
    */
   createTask(req, res) {
     try {
-      const { title, description, reminderDate } = req.body;
-      const task = taskModel.create({ title, description, reminderDate });
+      const { title, description } = req.body;
+      const task = taskModel.create({ title, description });
       res.status(201).json(task);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -68,19 +68,6 @@ const taskController = {
       }
 
       res.status(200).json({ message: 'Tarefa removida com sucesso.' });
-    } catch (error) {
-      res.status(500).json({ error: 'Erro interno do servidor.' });
-    }
-  },
-
-  /**
-   * GET /api/tasks/reminders
-   * Get tasks with pending (due) reminders.
-   */
-  getReminders(req, res) {
-    try {
-      const tasks = taskModel.findReminders();
-      res.status(200).json(tasks);
     } catch (error) {
       res.status(500).json({ error: 'Erro interno do servidor.' });
     }

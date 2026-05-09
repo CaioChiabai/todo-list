@@ -8,13 +8,7 @@ const router = express.Router();
  * 
  * Maps HTTP endpoints to controller methods.
  * Follows RESTful conventions.
- * 
- * IMPORTANT: /reminders must be defined BEFORE /:id
- * to avoid Express treating "reminders" as an :id parameter.
  */
-
-// GET /api/tasks/reminders - Get tasks with due reminders
-router.get('/reminders', taskController.getReminders);
 
 // GET /api/tasks - List all tasks
 router.get('/', taskController.getAllTasks);

@@ -23,7 +23,6 @@ Retorna todas as tarefas ordenadas por data de criação (mais recentes primeiro
     "title": "Estudar para a prova",
     "description": "Capítulos 3 e 4 do livro",
     "completed": false,
-    "reminderDate": "2026-05-10T14:00:00.000Z",
     "createdAt": "2026-05-09T10:00:00.000Z",
     "updatedAt": "2026-05-09T10:00:00.000Z"
   }
@@ -44,15 +43,13 @@ POST /api/tasks
 |:---|:---|:---|:---|
 | `title` | string | ✅ Sim | Título da tarefa (max 100 chars) |
 | `description` | string | ❌ Não | Descrição da tarefa (max 500 chars) |
-| `reminderDate` | string | ❌ Não | Data/hora do lembrete (ISO-8601) |
 
 **Exemplo:**
 
 ```json
 {
   "title": "Comprar leite",
-  "description": "Leite integral, 2 litros",
-  "reminderDate": "2026-05-09T18:00:00"
+  "description": "Leite integral, 2 litros"
 }
 ```
 
@@ -64,7 +61,6 @@ POST /api/tasks
   "title": "Comprar leite",
   "description": "Leite integral, 2 litros",
   "completed": false,
-  "reminderDate": "2026-05-09T18:00:00",
   "createdAt": "2026-05-09T10:00:00.000Z",
   "updatedAt": "2026-05-09T10:00:00.000Z"
 }
@@ -93,7 +89,6 @@ PUT /api/tasks/:id
 | `title` | string | Novo título |
 | `description` | string | Nova descrição |
 | `completed` | boolean | Status de conclusão |
-| `reminderDate` | string/null | Nova data de lembrete (null para remover) |
 
 **Exemplo — Marcar como concluída:**
 
@@ -133,31 +128,6 @@ DELETE /api/tasks/:id
 | Status | Condição |
 |:---|:---|
 | 404 | Tarefa não encontrada |
-
----
-
-### Listar Lembretes Vencidos
-
-```
-GET /api/tasks/reminders
-```
-
-Retorna tarefas **não concluídas** cujo `reminderDate` já passou.
-
-**Resposta (200):**
-
-```json
-[
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
-    "title": "Estudar para a prova",
-    "completed": false,
-    "reminderDate": "2026-05-09T08:00:00.000Z",
-    "createdAt": "2026-05-09T07:00:00.000Z",
-    "updatedAt": "2026-05-09T07:00:00.000Z"
-  }
-]
-```
 
 ---
 

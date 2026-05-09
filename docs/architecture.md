@@ -35,14 +35,13 @@ A aplicação segue o padrão **Model-View-Controller (MVC)**, separando a aplic
 │   │       CONTROLLER (taskController.js)     │   │
 │   │  createTask()  getAllTasks()              │   │
 │   │  updateTask()  deleteTask()              │   │
-│   │  getReminders()                          │   │
 │   └──────────────────┬───────────────────────┘   │
 │                      │                           │
 │   ┌──────────────────▼───────────────────────┐   │
 │   │          MODEL (taskModel.js)            │   │
 │   │  In-Memory Array: tasks[]                │   │
 │   │  create() findAll() findById()           │   │
-│   │  update() delete() findReminders()       │   │
+│   │  update() delete()                       │   │
 │   └──────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────┘
 ```
@@ -62,7 +61,6 @@ Responsável pelo gerenciamento dos dados. Utiliza um **array JavaScript em mem�
 | `findById(id)` | Busca uma tarefa pelo ID |
 | `update(id, data)` | Atualiza campos de uma tarefa existente |
 | `delete(id)` | Remove uma tarefa pelo ID |
-| `findReminders()` | Retorna tarefas com lembrete vencido |
 
 ### Controller (`src/controllers/taskController.js`)
 
@@ -76,14 +74,10 @@ Recebe as requisições HTTP, delega ao Model e retorna respostas JSON com statu
 | `createTask` | POST /api/tasks | Cria nova tarefa |
 | `updateTask` | PUT /api/tasks/:id | Atualiza tarefa |
 | `deleteTask` | DELETE /api/tasks/:id | Remove tarefa |
-| `getReminders` | GET /api/tasks/reminders | Lista lembretes vencidos |
 
 ### Routes (`src/routes/taskRoutes.js`)
 
 Mapeia URLs HTTP para funções do Controller usando Express Router.
-
-!!! note "Ordem importante"
-    A rota `/reminders` é definida **antes** de `/:id` para evitar que o Express interprete "reminders" como um parâmetro de ID.
 
 ### View (`src/views/`)
 
@@ -124,7 +118,6 @@ Cada tarefa possui a seguinte estrutura:
   "title": "string (obrigatório, max 100)",
   "description": "string (opcional, max 500)",
   "completed": false,
-  "reminderDate": "ISO-8601 | null",
   "createdAt": "ISO-8601",
   "updatedAt": "ISO-8601"
 }
@@ -135,7 +128,7 @@ Cada tarefa possui a seguinte estrutura:
 ### Criar Tarefa
 
 ```
-Browser → POST /api/tasks (body: { title, description, reminderDate })
+Browser → POST /api/tasks (body: { title, description })
        → Router → Controller.createTask()
        → Model.create() → tasks.push(newTask)
        → 201 Created + JSON da tarefa
@@ -150,14 +143,4 @@ Browser → DELETE /api/tasks/:id
        → Model.delete() → tasks.splice(index, 1)
        → 200 OK + mensagem
        → Browser remove card com animação
-```
-
-### Verificar Lembretes
-
-```
-Browser (polling 30s) → GET /api/tasks/reminders
-       → Router → Controller.getReminders()
-       → Model.findReminders() → filter por reminderDate <= now
-       → 200 OK + array de tarefas
-       → Browser destaca cards com lembrete vencido
 ```

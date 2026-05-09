@@ -5,24 +5,20 @@
  * Handles:
  * - CRUD operations via Fetch API
  * - UI rendering and updates
- * - Reminder polling
  * - Theme toggling
  * - Toast notifications
  */
 
 const API_URL = '/api/tasks';
-const REMINDER_POLL_INTERVAL = 30000; // 30 seconds
 
 // --- State ---
 let tasks = [];
 let currentFilter = 'all';
-let reminderIds = new Set();
 
 // --- DOM Elements ---
 const taskForm = document.getElementById('task-form');
 const taskTitleInput = document.getElementById('task-title');
 const taskDescInput = document.getElementById('task-description');
-const taskReminderInput = document.getElementById('task-reminder');
 const titleCount = document.getElementById('title-count');
 const descCount = document.getElementById('desc-count');
 const submitBtn = document.getElementById('submit-btn');
@@ -51,7 +47,7 @@ async function fetchTasks() {
 
 async function createTask(data) {
   try {
-    setLoading(true);
+    submitBtn.disabled = true;
     const res = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -73,7 +69,7 @@ async function createTask(data) {
     console.error(error);
     return null;
   } finally {
-    setLoading(false);
+    submitBtn.disabled = false;
   }
 }
 
@@ -129,31 +125,6 @@ async function deleteTask(id) {
   }
 }
 
-async function fetchReminders() {
-  try {
-    const res = await fetch(`${API_URL}/reminders`);
-    if (!res.ok) return;
-
-    const reminders = await res.json();
-    const newReminderIds = new Set(reminders.map(t => t.id));
-
-    // Check for newly triggered reminders
-    for (const id of newReminderIds) {
-      if (!reminderIds.has(id)) {
-        const task = tasks.find(t => t.id === id);
-        if (task) {
-          showToast(`🔔 Lembrete: ${task.title}`, 'warning');
-        }
-      }
-    }
-
-    reminderIds = newReminderIds;
-    updateReminderHighlights();
-  } catch (error) {
-    console.error('Erro ao verificar lembretes:', error);
-  }
-}
-
 // ============================================
 // Rendering
 // ============================================
@@ -173,22 +144,13 @@ function renderTasks() {
 
   taskListEl.innerHTML = filtered.map(task => {
     const isCompleted = task.completed;
-    const hasReminder = task.reminderDate;
-    const isReminderDue = reminderIds.has(task.id);
 
     const cardClasses = [
       'task-card',
-      isCompleted ? 'completed' : '',
-      isReminderDue && !isCompleted ? 'has-reminder-due' : ''
+      isCompleted ? 'completed' : ''
     ].filter(Boolean).join(' ');
 
     const checkboxClass = `task-checkbox${isCompleted ? ' checked' : ''}`;
-
-    const reminderBadge = hasReminder
-      ? `<span class="task-reminder-badge ${isReminderDue && !isCompleted ? 'due' : ''}">
-           🔔 ${formatDate(task.reminderDate)}
-         </span>`
-      : '';
 
     return `
       <div class="${cardClasses}" data-task-id="${task.id}">
@@ -203,7 +165,6 @@ function renderTasks() {
           ${task.description ? `<div class="task-description">${escapeHtml(task.description)}</div>` : ''}
           <div class="task-meta">
             <span class="task-date">📅 ${formatDate(task.createdAt)}</span>
-            ${reminderBadge}
           </div>
         </div>
         <div class="task-actions">
@@ -225,29 +186,9 @@ function getFilteredTasks() {
       return tasks.filter(t => !t.completed);
     case 'completed':
       return tasks.filter(t => t.completed);
-    case 'reminders':
-      return tasks.filter(t => t.reminderDate && !t.completed);
     default:
       return tasks;
   }
-}
-
-function updateReminderHighlights() {
-  document.querySelectorAll('.task-card').forEach(card => {
-    const id = card.dataset.taskId;
-    const task = tasks.find(t => t.id === id);
-    if (!task || task.completed) return;
-
-    if (reminderIds.has(id)) {
-      card.classList.add('has-reminder-due');
-      const badge = card.querySelector('.task-reminder-badge');
-      if (badge) badge.classList.add('due');
-    } else {
-      card.classList.remove('has-reminder-due');
-      const badge = card.querySelector('.task-reminder-badge');
-      if (badge) badge.classList.remove('due');
-    }
-  });
 }
 
 // ============================================
@@ -267,7 +208,6 @@ taskForm.addEventListener('submit', async (e) => {
 
   const title = taskTitleInput.value.trim();
   const description = taskDescInput.value.trim();
-  const reminderDate = taskReminderInput.value || null;
 
   if (!title) {
     showToast('O título é obrigatório.', 'error');
@@ -275,7 +215,7 @@ taskForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  const result = await createTask({ title, description, reminderDate });
+  const result = await createTask({ title, description });
   if (result) {
     taskForm.reset();
     titleCount.textContent = '0';
@@ -315,20 +255,6 @@ themeToggle.addEventListener('click', () => {
 // ============================================
 // Utilities
 // ============================================
-
-function setLoading(loading) {
-  const text = submitBtn.querySelector('.btn-text');
-  const spinner = submitBtn.querySelector('.btn-loading');
-  if (loading) {
-    text.hidden = true;
-    spinner.hidden = false;
-    submitBtn.disabled = true;
-  } else {
-    text.hidden = false;
-    spinner.hidden = true;
-    submitBtn.disabled = false;
-  }
-}
 
 function showToast(message, type = 'success') {
   const icons = { success: '✅', error: '❌', warning: '⚠️' };
@@ -372,11 +298,6 @@ function init() {
 
   // Load tasks
   fetchTasks();
-
-  // Start reminder polling
-  setInterval(fetchReminders, REMINDER_POLL_INTERVAL);
-  // Also check immediately
-  setTimeout(fetchReminders, 2000);
 }
 
 init();

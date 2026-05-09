@@ -56,7 +56,7 @@ Este documento define as regras, princípios e restrições que governam o desen
 - **Zero dependências de build**: Não há necessidade de Webpack, Babel, ou bundlers. O HTML é servido diretamente pelo Express.
 - **Performance**: Sem overhead de Virtual DOM, hydration ou bundle JavaScript pesado.
 - **Aprendizado**: Demonstra domínio das tecnologias fundamentais da web.
-- **Escopo adequado**: Para uma aplicação TODO com 3 funcionalidades principais, um framework SPA seria over-engineering.
+- **Escopo adequado**: Para uma aplicação TODO com 2 funcionalidades principais (cadastrar e remover), um framework SPA seria over-engineering.
 
 ### 2.6 Render (Hosting Gratuito)
 
@@ -120,7 +120,7 @@ Este documento define as regras, princípios e restrições que governam o desen
 
 | Critério | Métrica |
 |:---|:---|
-| Funcionalidades completas | CRUD de tarefas + lembretes funcionando |
+| Funcionalidades completas | CRUD de tarefas funcionando |
 | Testes passando | 100% dos testes verdes |
 | Deploy online | App acessível via URL pública |
 | Documentação online | MKDocs acessível via GitHub Pages |

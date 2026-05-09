@@ -9,9 +9,9 @@ Uma aplicação web de gerenciamento de tarefas construída com a metodologia **
 
 ## ✨ Funcionalidades
 
-- ✅ Cadastrar tarefas com título, descrição e lembrete
+- ✅ Cadastrar tarefas com título e descrição
 - ❌ Remover tarefas
-- 🔔 Lembretes visuais com destaque automático
+- ✔️ Marcar tarefas como concluídas
 - 🌗 Tema claro/escuro
 - 📱 Interface responsiva
 

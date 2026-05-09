@@ -22,21 +22,17 @@ describe('TaskModel', () => {
       expect(task.title).toBe('Test task');
       expect(task.description).toBe('');
       expect(task.completed).toBe(false);
-      expect(task.reminderDate).toBeNull();
       expect(task.createdAt).toBeDefined();
       expect(task.updatedAt).toBeDefined();
     });
 
-    test('should create a task with description and reminder', () => {
-      const reminderDate = new Date(Date.now() + 3600000).toISOString();
+    test('should create a task with description', () => {
       const task = model.create({
         title: 'Task with details',
-        description: 'Some description',
-        reminderDate
+        description: 'Some description'
       });
 
       expect(task.description).toBe('Some description');
-      expect(task.reminderDate).toBe(reminderDate);
     });
 
     test('should throw error when title is missing', () => {
@@ -128,33 +124,6 @@ describe('TaskModel', () => {
 
     test('should return false for unknown ID', () => {
       expect(model.delete('non-existent')).toBe(false);
-    });
-  });
-
-  describe('findReminders()', () => {
-    test('should find tasks with past reminder dates', () => {
-      const pastDate = new Date(Date.now() - 60000).toISOString(); // 1 min ago
-      model.create({ title: 'Reminder task', reminderDate: pastDate });
-      model.create({ title: 'No reminder' });
-
-      const reminders = model.findReminders();
-      expect(reminders).toHaveLength(1);
-      expect(reminders[0].title).toBe('Reminder task');
-    });
-
-    test('should NOT include completed tasks in reminders', () => {
-      const pastDate = new Date(Date.now() - 60000).toISOString();
-      const task = model.create({ title: 'Done task', reminderDate: pastDate });
-      model.update(task.id, { completed: true });
-
-      expect(model.findReminders()).toHaveLength(0);
-    });
-
-    test('should NOT include tasks with future reminders', () => {
-      const futureDate = new Date(Date.now() + 3600000).toISOString(); // 1 hour ahead
-      model.create({ title: 'Future task', reminderDate: futureDate });
-
-      expect(model.findReminders()).toHaveLength(0);
     });
   });
 
@@ -255,25 +224,6 @@ describe('API Endpoints', () => {
     test('should return 404 for unknown ID', async () => {
       const res = await request(app).delete('/api/tasks/unknown-id');
       expect(res.status).toBe(404);
-    });
-  });
-
-  describe('GET /api/tasks/reminders', () => {
-    test('should return tasks with due reminders', async () => {
-      const pastDate = new Date(Date.now() - 60000).toISOString();
-
-      await request(app)
-        .post('/api/tasks')
-        .send({ title: 'Reminder', reminderDate: pastDate });
-
-      await request(app)
-        .post('/api/tasks')
-        .send({ title: 'No reminder' });
-
-      const res = await request(app).get('/api/tasks/reminders');
-      expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(1);
-      expect(res.body[0].title).toBe('Reminder');
     });
   });
 

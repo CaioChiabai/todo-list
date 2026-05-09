@@ -4,9 +4,9 @@
 
 Desenvolver uma aplicação web de gerenciamento de tarefas (TODO List) que permita ao usuário:
 
-1. **Cadastrar tarefas** com título, descrição e data/hora de lembrete
+1. **Cadastrar tarefas** com título e descrição
 2. **Remover tarefas** do sistema
-3. **Gerenciar lembretes** visuais para tarefas com data/hora definida
+3. **Marcar tarefas** como concluídas
 
 O projeto utiliza a metodologia **SPEC-DRIVEN Development (SDD)** para garantir que todas as decisões de design e implementação estejam documentadas e rastreáveis.
 
@@ -18,7 +18,6 @@ O projeto utiliza a metodologia **SPEC-DRIVEN Development (SDD)** para garantir 
 
 - API REST para CRUD de tarefas
 - Interface web responsiva e moderna
-- Sistema de lembretes visuais (indicadores na UI)
 - Armazenamento em memória (sem banco de dados)
 - Documentação completa com MKDocs
 - Deploy em servidor gratuito (Render)
@@ -43,7 +42,7 @@ O projeto utiliza a metodologia **SPEC-DRIVEN Development (SDD)** para garantir 
 
 ## 4. Critérios de Sucesso
 
-1. Todas as funcionalidades (cadastrar, remover, lembretes) estão operacionais
+1. Todas as funcionalidades (cadastrar, remover, marcar como concluída) estão operacionais
 2. A aplicação está deployada e acessível publicamente
 3. A documentação MKDocs está publicada no GitHub Pages
 4. Os testes passam com sucesso

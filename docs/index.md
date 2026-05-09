@@ -11,9 +11,9 @@ Bem-vindo à documentação da aplicação **TODO List** — um gerenciador de t
 
 ## ✨ Funcionalidades
 
-- ✅ **Cadastrar tarefas** — Crie tarefas com título, descrição e lembrete
+- ✅ **Cadastrar tarefas** — Crie tarefas com título e descrição
 - ❌ **Remover tarefas** — Remova tarefas com animação suave
-- 🔔 **Lembretes visuais** — Destaque automático de tarefas com lembrete vencido
+- ✔️ **Marcar como concluída** — Toggle de status pendente/concluída
 - 🌗 **Tema claro/escuro** — Interface adaptável
 - 📱 **Responsivo** — Funciona em desktop e mobile
 

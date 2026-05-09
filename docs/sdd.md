@@ -19,7 +19,6 @@ Captura o contexto do negócio, objetivos e critérios de sucesso.
 - `specs/architecture.md` — Decisões arquiteturais
 - `specs/features/create-task.md` — Spec de cadastro de tarefas
 - `specs/features/remove-task.md` — Spec de remoção de tarefas
-- `specs/features/reminders.md` — Spec de lembretes
 
 ### Fase 2: PLAN (Planejar)
 
@@ -28,7 +27,7 @@ Traduz as especificações em decisões arquiteturais.
 **Decisões tomadas:**
 
 - Arquitetura MVC
-- API REST com 5 endpoints
+- API REST com 4 endpoints
 - Armazenamento em memória (Array JavaScript)
 - Frontend Vanilla (sem frameworks)
 
@@ -43,11 +42,10 @@ Decompõe o plano em unidades de trabalho testáveis.
 3. Implementar Controller (lógica CRUD)
 4. Implementar Routes (API REST)
 5. Criar View (frontend premium)
-6. Implementar sistema de lembretes
-7. Escrever testes com Jest
-8. Configurar MKDocs
-9. Deploy no Render
-10. Deploy docs no GitHub Pages
+6. Escrever testes com Jest
+7. Configurar MKDocs
+8. Deploy no Render
+9. Deploy docs no GitHub Pages
 
 ### Fase 4: IMPLEMENT (Implementar)
 

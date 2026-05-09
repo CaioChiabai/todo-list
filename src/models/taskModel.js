@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
  * TaskModel - Model layer (MVC)
  * 
  * Manages task data in-memory using a JavaScript array.
- * All CRUD operations and reminder queries are handled here.
+ * All CRUD operations are handled here.
  * 
  * Design Decision: Using a class with an internal array instead of
  * a module-level variable allows for easy testing (new instance per test).
@@ -16,7 +16,7 @@ class TaskModel {
 
   /**
    * Create a new task.
-   * @param {Object} data - Task data { title, description?, reminderDate? }
+   * @param {Object} data - Task data { title, description? }
    * @returns {Object} The created task with generated fields
    * @throws {Error} If title is missing or invalid
    */
@@ -40,7 +40,6 @@ class TaskModel {
       title: data.title.trim(),
       description: data.description ? data.description.trim() : '',
       completed: false,
-      reminderDate: data.reminderDate || null,
       createdAt: now,
       updatedAt: now
     };
@@ -71,7 +70,7 @@ class TaskModel {
   /**
    * Update an existing task.
    * @param {string} id - Task UUID
-   * @param {Object} data - Fields to update { title?, description?, completed?, reminderDate? }
+   * @param {Object} data - Fields to update { title?, description?, completed? }
    * @returns {Object|null} The updated task or null if not found
    * @throws {Error} If validation fails
    */
@@ -100,10 +99,6 @@ class TaskModel {
       task.completed = Boolean(data.completed);
     }
 
-    if (data.reminderDate !== undefined) {
-      task.reminderDate = data.reminderDate || null;
-    }
-
     task.updatedAt = new Date().toISOString();
     return task;
   }
@@ -121,19 +116,6 @@ class TaskModel {
     return true;
   }
 
-  /**
-   * Find tasks with pending reminders.
-   * Returns incomplete tasks whose reminderDate has passed.
-   * @returns {Array} Tasks with due reminders
-   */
-  findReminders() {
-    const now = new Date();
-    return this.tasks.filter(task =>
-      task.reminderDate &&
-      !task.completed &&
-      new Date(task.reminderDate) <= now
-    );
-  }
 
   /**
    * Get the total number of tasks.

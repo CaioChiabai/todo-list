@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Aplicação TODO List com lembretes — Gerencie suas tarefas de forma eficiente e elegante.">
+  <meta name="description" content="Aplicação TODO List — Gerencie suas tarefas de forma eficiente e elegante.">
   <title>TODO List — Gerenciador de Tarefas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,19 +67,8 @@
             ></textarea>
             <span class="char-count"><span id="desc-count">0</span>/500</span>
           </div>
-          <div class="form-group">
-            <label for="task-reminder">🔔 Lembrete</label>
-            <input
-              type="datetime-local"
-              id="task-reminder"
-              name="reminderDate"
-            >
-          </div>
           <button type="submit" id="submit-btn" class="btn btn-primary">
-            <span class="btn-text">Adicionar Tarefa</span>
-            <span class="btn-loading" hidden>
-              <span class="spinner"></span>
-            </span>
+            Adicionar Tarefa
           </button>
         </form>
       </div>
@@ -97,9 +86,7 @@
         <button class="filter-btn" data-filter="completed" id="filter-completed">
           Concluídas
         </button>
-        <button class="filter-btn" data-filter="reminders" id="filter-reminders">
-          🔔 Lembretes
-        </button>
+
       </div>
     </section>
 
