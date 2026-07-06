@@ -37,9 +37,17 @@ theme:
 nav:
   - Home: index.md
   - Metodologia SDD: sdd.md
-  - Constituição: constitution.md
+  - Especificações:
+      - Spec: specs/spec.md
+      - Modelo de Dados: specs/data-model.md
+      - Pesquisa: specs/research.md
+      - Plano de Implementação: specs/plan.md
+      - Tarefas: specs/tasks.md
+      - Início Rápido: specs/quickstart.md
+  - Contratos:
+      - API v1: contracts/api-v1.md
+  - Constituição: memory/constitution.md
   - Arquitetura: architecture.md
-  - API REST: api.md
   - Deploy: deployment.md
 
 markdown_extensions:

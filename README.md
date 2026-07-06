@@ -27,14 +27,38 @@ src/
 └── routes/         → Endpoints REST API
 ```
 
-## 📋 SPEC-DRIVEN Development
+## 📋 Spec-Driven Development (GitHub Spec Kit)
 
-Todas as especificações estão na pasta `specs/`:
+Este projeto segue o **[GitHub Spec Kit](https://github.com/github/spec-kit)**, o padrão
+open-source da GitHub para SDD.
 
-- `constitution.md` — Regras e justificativas do projeto
-- `overview.md` — Visão geral e escopo
-- `architecture.md` — Decisões arquiteturais
-- `features/` — Specs por funcionalidade
+```
+.specify/
+├── memory/constitution.md   # Fonte de verdade dos princípios
+├── templates/               # spec / plan / tasks / constitution / checklist
+└── scripts/                 # Helpers (PowerShell + Bash)
+.claude/commands/speckit.*   # Comandos do agente
+docs/
+├── memory/constitution.md   # Constituição publicada
+├── specs/                   # spec, plan, research, data-model, tasks, quickstart
+└── contracts/api-v1.md      # Contrato da API
+```
+
+### Princípios da Constituição (v1.0.0)
+
+Definidos em [`.specify/memory/constitution.md`](.specify/memory/constitution.md):
+
+1. **Arquitetura MVC** (não-negociável) — Model/Controller/View separados.
+2. **Armazenamento em memória** — sem banco de dados persistente.
+3. **API RESTful** — verbos e status codes corretos, contratos documentados.
+4. **Testes obrigatórios** — Jest + Supertest, TDD (testes antes da implementação).
+5. **Frontend Vanilla** — sem frameworks/build.
+6. **Documentação viva** — specs e código evoluem juntos e são publicados no MkDocs.
+
+### Fluxo de comandos
+
+`/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan`
+→ `/speckit.tasks` → `/speckit.analyze` → `/speckit.implement`
 
 ## 🛠️ Tecnologias
 

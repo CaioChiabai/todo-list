@@ -33,9 +33,9 @@ Bem-vindo à documentação da aplicação **TODO List** — um gerenciador de t
 
 Este projeto foi desenvolvido seguindo as 4 fases do **SPEC-DRIVEN Development**:
 
-1. **SPECIFY** — Especificações na pasta `specs/`
-2. **PLAN** — Arquitetura MVC documentada
-3. **TASKS** — Tarefas decompostas e rastreáveis
+1. **SPECIFY** — Especificações em `docs/specs/` (padrão GitHub Spec Kit)
+2. **PLAN** — Arquitetura MVC documentada em `docs/specs/plan.md`
+3. **TASKS** — Tarefas decompostas e rastreáveis em `docs/specs/tasks.md`
 4. **IMPLEMENT** — Código implementado seguindo as specs
 
 Leia mais em [Metodologia SDD](sdd.md).

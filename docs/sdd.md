@@ -1,75 +1,65 @@
-# Metodologia SPEC-DRIVEN Development
+# Metodologia Spec-Driven Development (GitHub Spec Kit)
 
 ## O que é SDD?
 
-**SPEC-DRIVEN Development (SDD)** é uma metodologia de desenvolvimento de software que prioriza a criação de especificações precisas e estruturadas como fonte de verdade antes de qualquer código ser escrito.
+**Spec-Driven Development (SDD)** é uma metodologia que trata a **especificação como
+fonte de verdade**: o comportamento é descrito de forma precisa e estruturada **antes**
+de o código ser escrito. Diferente do "vibe coding" (codificar por intuição), o SDD
+estabelece contratos claros que guiam — e permanecem rastreáveis a — toda a implementação.
 
-Diferente do "vibe coding" (codificação por intuição), o SDD estabelece contratos claros que guiam todo o processo de desenvolvimento.
+Este projeto adota o **[GitHub Spec Kit](https://github.com/github/spec-kit)**, o padrão
+open-source da GitHub para SDD.
 
-## As 4 Fases do SDD
+## Estrutura no repositório
 
-### Fase 1: SPECIFY (Especificar)
+```
+.specify/
+├── memory/constitution.md      # Fonte de verdade dos princípios
+├── templates/                  # spec / plan / tasks / constitution / checklist
+└── scripts/                    # Helpers (PowerShell + Bash)
 
-Captura o contexto do negócio, objetivos e critérios de sucesso.
+.claude/commands/speckit.*.md   # Comandos do agente (Claude Code)
 
-**Documentos criados neste projeto:**
+docs/
+├── memory/constitution.md      # Constituição (publicada)
+├── specs/                      # spec, plan, research, data-model, tasks, quickstart
+└── contracts/api-v1.md         # Contrato da API
+```
 
-- `specs/constitution.md` — Regras, princípios e justificativas
-- `specs/overview.md` — Visão geral e escopo do projeto
-- `specs/architecture.md` — Decisões arquiteturais
-- `specs/features/create-task.md` — Spec de cadastro de tarefas
-- `specs/features/remove-task.md` — Spec de remoção de tarefas
+Os artefatos ficam em `docs/` para serem publicados no site MkDocs — por isso a
+documentação é acessível diretamente a partir do link "Docs" da aplicação.
 
-### Fase 2: PLAN (Planejar)
+## As fases e comandos do Spec Kit
 
-Traduz as especificações em decisões arquiteturais.
+| Fase | Comando | Saída |
+|:---|:---|:---|
+| **Constituir** | `/speckit.constitution` | `.specify/memory/constitution.md` |
+| **Especificar** | `/speckit.specify` | `docs/specs/spec.md` (o QUÊ e o PORQUÊ) |
+| **Clarificar** | `/speckit.clarify` | resolve `[NEEDS CLARIFICATION]` |
+| **Planejar** | `/speckit.plan` | `plan.md`, `research.md`, `data-model.md`, `contracts/`, `quickstart.md` |
+| **Tarefas** | `/speckit.tasks` | `docs/specs/tasks.md` |
+| **Analisar** | `/speckit.analyze` | relatório de consistência (spec × plano × tarefas × constituição) |
+| **Implementar** | `/speckit.implement` | código executando as tarefas |
 
-**Decisões tomadas:**
+## A Constituição como portão
 
-- Arquitetura MVC
-- API REST com 4 endpoints
-- Armazenamento em memória (Array JavaScript)
-- Frontend Vanilla (sem frameworks)
+Antes do planejamento, o **Constitution Check** verifica os 6 princípios do projeto
+(MVC, armazenamento em memória, API RESTful, testes obrigatórios, frontend vanilla,
+documentação viva). Qualquer violação precisa ser justificada em *Complexity Tracking*
+ou eliminada. Leia em [Constituição](memory/constitution.md).
 
-### Fase 3: TASKS (Tarefas)
-
-Decompõe o plano em unidades de trabalho testáveis.
-
-**Tarefas definidas:**
-
-1. Inicializar projeto Node.js
-2. Implementar Model (in-memory store)
-3. Implementar Controller (lógica CRUD)
-4. Implementar Routes (API REST)
-5. Criar View (frontend premium)
-6. Escrever testes com Jest
-7. Configurar MKDocs
-8. Deploy no Render
-9. Deploy docs no GitHub Pages
-
-### Fase 4: IMPLEMENT (Implementar)
-
-Execução das tarefas sob as restrições definidas na Constituição.
-
-Cada tarefa foi implementada seguindo rigorosamente:
-
-- O padrão MVC definido na arquitetura
-- As restrições da Constituição
-- Os critérios de aceitação das feature specs
-
-## SDD vs. Outras Metodologias
+## SDD vs. outras metodologias
 
 | Aspecto | SDD | TDD | Vibe Coding |
 |:---|:---|:---|:---|
 | **Ponto de partida** | Especificação formal | Teste unitário | Prompt informal |
-| **Nível de abstração** | Alto (arquitetura + negócio) | Baixo (código) | Nenhum |
-| **Rastreabilidade** | Total (spec → code) | Parcial (test → code) | Nenhuma |
+| **Nível de abstração** | Alto (negócio + arquitetura) | Baixo (código) | Nenhum |
+| **Rastreabilidade** | Total (spec → código) | Parcial (teste → código) | Nenhuma |
 | **Documentação** | Obrigatória | Opcional | Inexistente |
-| **Qualidade** | Alta (contratos formais) | Alta (testes) | Variável |
 
-## Benefícios do SDD Neste Projeto
+## Benefícios neste projeto
 
-1. **Clareza**: Qualquer desenvolvedor entende as decisões sem perguntar
-2. **Rastreabilidade**: Cada feature tem uma spec que define exatamente o comportamento esperado
-3. **Qualidade**: Os testes foram derivados diretamente das specs
-4. **Documentação viva**: As specs estão versionadas junto com o código
+1. **Clareza**: qualquer pessoa entende as decisões sem perguntar.
+2. **Rastreabilidade**: cada requisito (`FR-xxx`) mapeia para tarefas e testes.
+3. **Qualidade**: os testes derivam diretamente da spec e dos contratos.
+4. **Documentação viva**: specs versionadas com o código e publicadas no site.

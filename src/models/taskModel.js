@@ -1,6 +1,21 @@
 const { v4: uuidv4 } = require('uuid');
 
 /**
+ * Monotonic ISO-8601 timestamp.
+ *
+ * new Date().toISOString() only has millisecond resolution, so two operations
+ * within the same millisecond produce identical timestamps. That breaks both
+ * ordering by createdAt and the "updatedAt changed" invariant. We keep a module
+ * level high-water mark so each call returns a strictly greater ISO timestamp.
+ */
+let lastTimestamp = 0;
+function nowISO() {
+  const ms = Math.max(Date.now(), lastTimestamp + 1);
+  lastTimestamp = ms;
+  return new Date(ms).toISOString();
+}
+
+/**
  * TaskModel - Model layer (MVC)
  * 
  * Manages task data in-memory using a JavaScript array.
@@ -33,7 +48,7 @@ class TaskModel {
       throw new Error('A descrição deve ter no máximo 500 caracteres.');
     }
 
-    const now = new Date().toISOString();
+    const now = nowISO();
 
     const task = {
       id: uuidv4(),
@@ -75,8 +90,12 @@ class TaskModel {
    * @throws {Error} If validation fails
    */
   update(id, data) {
-    const task = this.findById(id);
-    if (!task) return null;
+    const index = this.tasks.findIndex(task => task.id === id);
+    if (index === -1) return null;
+
+    // Immutable update: work on a copy so references returned by earlier
+    // create()/findById() calls stay a snapshot of the pre-update state.
+    const task = { ...this.tasks[index] };
 
     if (data.title !== undefined) {
       if (typeof data.title !== 'string' || data.title.trim().length === 0) {
@@ -99,7 +118,8 @@ class TaskModel {
       task.completed = Boolean(data.completed);
     }
 
-    task.updatedAt = new Date().toISOString();
+    task.updatedAt = nowISO();
+    this.tasks[index] = task;
     return task;
   }
 
